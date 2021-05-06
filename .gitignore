@@ -1,2 +1,4 @@
 ./main
 *.vtk
+*.tif
+*.tiff
