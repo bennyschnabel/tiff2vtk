@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 	dispHeader();
 
 	// Debug mode (0 = false, 1 = true)
-	debug = 0;
+	debug = 1;
 
 	switch (debug)
 	{

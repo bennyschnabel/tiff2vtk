@@ -6,7 +6,7 @@ Conversion of multipage *.TIFF files to *.VTK file format.
 
 ### LibTIFF - TIFF Library and Utilities
 
-Libtiff is a library for reading and writing Tagged Image File Format (abbreviated TIFF) files [WIKIPEDIA](https://en.wikipedia.org/wiki/Libtiff).
+Libtiff is a library for reading and writing Tagged Image File Format (abbreviated TIFF) files [[WIKIPEDIA]](https://en.wikipedia.org/wiki/Libtiff).
 
 Install:
 ```
@@ -18,7 +18,7 @@ sudo apt install libtiff-dev
 To run this project, compile it like:
 ```
 gcc -Wall -L/usr/lib main.c -ltiff -o tiff2vtk
-./tiff2vtk **tiff file name** **vtk file name**
+./tiff2vtk tiff_file_name vtk_file_name
 ```
 
 Example:
@@ -30,6 +30,13 @@ gcc -Wall -L/usr/lib main.c -ltiff -o tiff2vtk
 ## Additional information
 
 [VTK File Formats](https://vtk.org/wp-content/uploads/2015/04/file-formats.pdf)
+
+## TODO - Known bugs
+
+- [ ] TIFFReadDirectory: Warning, Unknown field with tag 59932 (0xea1c) encountered
+- [ ] Image is compressed with the following configuration
+-- SamplesPerPixel = 3
+-- BitsPerSample = 8
 
 ## License
 
