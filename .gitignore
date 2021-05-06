@@ -1,4 +1,6 @@
 main
+tiff2vtk
+*.out
 *.vtk
 *.tif
 *.tiff
