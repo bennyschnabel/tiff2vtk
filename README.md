@@ -34,9 +34,7 @@ gcc -Wall -L/usr/lib main.c -ltiff -o tiff2vtk
 ## TODO - Known bugs
 
 - [ ] TIFFReadDirectory: Warning, Unknown field with tag 59932 (0xea1c) encountered
-- [ ] Image is compressed with the following configuration
--- SamplesPerPixel = 3
--- BitsPerSample = 8
+- [ ] Image is compressed with the following configuration: SamplesPerPixel = 3, BitsPerSample = 8
 
 ## License
 

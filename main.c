@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 	dispHeader();
 
 	// Debug mode (0 = false, 1 = true)
-	debug = 1;
+	debug = 0;
 
 	switch (debug)
 	{
@@ -177,41 +177,85 @@ int main(int argc, char** argv)
 	fclose(fl_un);
 	
 	// Check if the *.TIFF file is open
-	if (tif) 
+	if (tif)
 	{
-		int countLoop = 0;
-		// Loop over tiff stream
-		do {
-			printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
-			countLoop++;
-			count = 0;
-			tsize_t scanline;
-			tdata_t buf;
-			uint32_t row;
-			uint32_t col;
-			
-			scanline = TIFFScanlineSize(tif);
-			buf = _TIFFmalloc(scanline);
-			uint8_t* data;
-			
-			fl_un = fopen(fileNameExport, "a");
-			
-			for (row = 0; row < dims[1]; row++)
-			{
-				TIFFReadScanline(tif, buf, row,1);
-				data = (uint8_t*)buf;
+		if (spp * bps == 8)
+		{
+			int countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				count = 0;
+				tsize_t scanline;
+				tdata_t buf;
+				uint32_t row;
+				uint32_t col;
 				
-				for (col = 0; col < dims[0]; col++)
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint8_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
 				{
-					unsigned int im_int = (uintptr_t) *data;
-					fprintf(fl_un, "%d ", (short) im_int);
-					count++;
-					data++;
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint8_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%d ", (short) im_int);
+						count++;
+						data++;
+					}
 				}
-			}
-			
-			fclose(fl_un);
-		} while (TIFFReadDirectory(tif));
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else if (spp * bps == 24)
+		{
+			int countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				count = 0;
+				tsize_t scanline;
+				tdata_t buf;
+				uint32_t row;
+				uint32_t col;
+				
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint32_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
+				{
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint32_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%d ", (short) im_int);
+						count++;
+						data++;
+					}
+				}
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else
+		{
+			printf("Error: Data not written to *.VTK");
+		}
+		
 	}
 
 	end = clock();
