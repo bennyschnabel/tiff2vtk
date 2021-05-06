@@ -2,6 +2,14 @@
 
 Conversion of multipage *.TIFF files to *.VTK file format.
 
+## Example
+
+
+*.TIFF | *.VTK
+--- | ---
+![*.TIFF](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream.png) | ![*.VTK](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream_vtk.png)
+ | [ParaView](https://www.paraview.org/)
+
 ## Requirements
 
 ### LibTIFF - TIFF Library and Utilities
