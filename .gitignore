@@ -4,6 +4,12 @@ tiff2vtk
 *.tif
 *.tiff
 
+# exclude everything
+build/*
+
+# exception to the rule
+!build/.gitkeep 
+
 # List from https://gist.github.com/octocat/9257657
 
 # Compiled source #
