@@ -25,22 +25,23 @@ sudo apt install libtiff-dev
 
 To run this project, compile it like:
 ```
-gcc -Wall -L/usr/lib main.c -ltiff -o tiff2vtk
-./tiff2vtk tiff_file_name vtk_file_name
+gcc -Wall -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
+./build/tiff2vtk tiff_file_name vtk_file_name
 ```
 
 Example:
 ```
-gcc -Wall -L/usr/lib main.c -ltiff -o tiff2vtk
-./tiff2vtk Knochenprobe2stream.tiff Knochenprobe2stream.vtk
+gcc -Wall -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
+./build/tiff2vtk Knochenprobe2stream.tiff Knochenprobe2stream.vtk
 ```
 
 ## Additional information
 
 [VTK File Formats](https://vtk.org/wp-content/uploads/2015/04/file-formats.pdf)
 
-## TODO - Known bugs
+## TODO / Known bugs
 
+- [] CMake
 - [ ] TIFFReadDirectory: Warning, Unknown field with tag 59932 (0xea1c) encountered
 - [ ] Image is compressed with the following configuration: SamplesPerPixel = 3, BitsPerSample = 8
 
