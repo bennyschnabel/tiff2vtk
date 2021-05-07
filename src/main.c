@@ -1,11 +1,11 @@
-//
-// tiff2vtk - main
-//
-// Author: Benjamin Schnabel
-// High Performance Computing Center Stuttgart (HLRS)
-// BSD-2-Clause License 
-// Date: 2021.05.05
-//
+// ******************************************************
+// * tiff2vtk - main                                    *
+// *                                                    *
+// * Author: Benjamin Schnabel                          *
+// * High Performance Computing Center Stuttgart (HLRS) *
+// * BSD-2-Clause License                               *
+// * Date: 2021.05.05                                   *
+// ******************************************************
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,9 +48,15 @@ FILE *fl_un;
 clock_t start, end;
 double cpu_time_used;
 
+// ************************
+// * Main function main() *
+// ************************
+
 int main(int argc, char** argv)
 {
 	start = clock();
+
+	(void)argc;
 
 	dispHeader();
 
@@ -191,8 +197,13 @@ int main(int argc, char** argv)
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	printf("\nTime = %f seconds \n", cpu_time_used);
 
-	return 0;
+	/* Return */
+	return (0);
 }
+
+// ************************
+// * asciiValueToBinary() *
+// ************************
 
 int asciiValueToBinary(int asciiInput)
 {
@@ -211,6 +222,10 @@ int asciiValueToBinary(int asciiInput)
 	return res;
 }
 
+// ************************
+// * dispHeader()         *
+// ************************
+
 void dispHeader(void)
 {
 	printf("######################################################\n");
@@ -221,6 +236,10 @@ void dispHeader(void)
 	printf("# Date: 2021.05.05                                   #\n");
 	printf("######################################################\n\n");
 }
+
+// *************************
+// * dispInformationTIFF() *
+// *************************
 
 void dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp, int pin)
 {
@@ -325,6 +344,10 @@ void dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp
 	}
 }
 
+// ********************
+// * vtkHeaderASCII() *
+// ********************
+
 void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3])
 {
 	// Write *.VTK file (ASCII)
@@ -351,6 +374,10 @@ void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int
 	fprintf(fl_un, "LOOKUP_TABLE default\n");
 	fclose(fl_un);
 }
+
+// *********************
+// * vtkHeaderBINARY() *
+// *********************
 
 void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3])
 {
@@ -379,6 +406,10 @@ void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, in
 	fprintf(fl_un, "LOOKUP_TABLE default\n");
 	fclose(fl_un);
 }
+
+// ******************
+// * vtkDataASCII() *
+// ******************
 
 void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 {
@@ -489,6 +520,10 @@ void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 		}
 	}
 }
+
+// *******************
+// * vtkDataBINARY() *
+// *******************
 
 void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 {
