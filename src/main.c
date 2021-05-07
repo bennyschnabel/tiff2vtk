@@ -1,5 +1,5 @@
 //
-// tiff2vtk
+// tiff2vtk - main
 //
 // Author: Benjamin Schnabel
 // High Performance Computing Center Stuttgart (HLRS)
@@ -13,33 +13,39 @@
 #include <stdint.h>
 #include <math.h>
 #include <time.h>
+#include <assert.h>
 // LibTIFF - TIFF Library and Utilities
 #include <tiffio.h>
 
 // Function declaration
-int dispHeader(void);
-int dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp, int pin);
+int asciiValueToBinary(int asciiInput);
+void dispHeader(void);
+void dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp, int pin);
+void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3]);
+void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3]);
+void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
+void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
 
 // Variable declaration
 char* fileNameImport;
 char* fileNameExport;
 
 int debug;
+int switchASCIIorBINARY;
 int spp;
 int bps;
 int comp;
 int pin;
-int count;
 int resunit;
 
 int dims[3];
 
 float spcng[3];
-float delta;
+
+FILE *fl_un;
 
 clock_t start, end;
 double cpu_time_used;
-
 
 int main(int argc, char** argv)
 {
@@ -48,7 +54,7 @@ int main(int argc, char** argv)
 	dispHeader();
 
 	// Debug mode (0 = false, 1 = true)
-	debug = 0;
+	debug = 1;
 
 	switch (debug)
 	{
@@ -56,18 +62,24 @@ int main(int argc, char** argv)
 		fileNameImport = argv[1];
 
 		fileNameExport = argv[2];
+
+		switchASCIIorBINARY = argc;
 		break;
 	case 1:
 		fileNameImport = "Multi_page24bpp.tif";
 		fileNameImport = "multipage_tiff_example.tif";
-		//fileNameImport = "Knochenprobe2stream.tiff";
+		fileNameImport = "Knochenprobe2stream.tiff";
 
 		fileNameExport = "test.vtk";
+
+		switchASCIIorBINARY = 0;
 		break;
 	default:
 		fileNameImport = "";
 		
 		fileNameExport = "";
+
+		switchASCIIorBINARY = 0;
 		break;
 	}
 
@@ -152,120 +164,53 @@ int main(int argc, char** argv)
 
 		dispInformationTIFF(dims, spcng, spp, bps, comp, pin);
 	}
-	
-	// Write *.VTK file
-	FILE *fl_un;
-	fl_un = fopen(fileNameExport, "w+");
-	// Part 1:Header
-	fprintf(fl_un, "# vtk DataFile Version 5.1\n");
-	// Part 2:Title (256 characters maximum, terminated with newline \n character)
-	fprintf(fl_un, "%s\n", fileNameImport);
-	// Part 3:Data type, either ASCII or BINARY
-	fprintf(fl_un, "ASCII\n");
-	// Part 4:Geometry/topology.Type is one of: STRUCTURED_POINTS, STRUCTURED_GRID, UNSTRUCTURED_GRID, POLYDATA, RECTILINEAR_GRID, FIELD
-	fprintf(fl_un, "DATASET STRUCTURED_POINTS\n");
-	// Part4: DIMENSIONS nx ny nz
-	fprintf(fl_un, "DIMENSIONS %d %d %d\n", dims[0], dims[1], dims[2]);
-	// Part4: ORIGIN x y z
-	fprintf(fl_un, "ORIGIN 0 0 0\n");
-	// Part4: SPACING sx sy sz
-	fprintf(fl_un, "SPACING %f %f %f\n", spcng[0], spcng[1], spcng[2]);
-	// Part 5:Dataset attributes. The number of data items n of each type must match the numberof points or cells in the dataset. (If type is FIELD, point and cell data should be omitted.
-	fprintf(fl_un, "POINT_DATA %d\n", dims[0] * dims[1] * dims[2]);
-	fprintf(fl_un, "SCALARS DICOMImage short\n");
-	fprintf(fl_un, "LOOKUP_TABLE default\n");
-	fclose(fl_un);
-	
-	// Check if the *.TIFF file is open
-	if (tif)
-	{
-		if (spp * bps == 8)
-		{
-			int countLoop = 0;
-			// Loop over tiff stream
-			do {
-				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
-				countLoop++;
-				count = 0;
-				tsize_t scanline;
-				tdata_t buf;
-				uint32_t row;
-				uint32_t col;
-				
-				scanline = TIFFScanlineSize(tif);
-				buf = _TIFFmalloc(scanline);
-				uint8_t* data;
-				
-				fl_un = fopen(fileNameExport, "a");
-				
-				for (row = 0; row < dims[1]; row++)
-				{
-					TIFFReadScanline(tif, buf, row,1);
-					data = (uint8_t*)buf;
-					
-					for (col = 0; col < dims[0]; col++)
-					{
-						unsigned int im_int = (uintptr_t) *data;
-						fprintf(fl_un, "%d ", (short) im_int);
-						count++;
-						data++;
-					}
-				}
-				
-				fclose(fl_un);
-			} while (TIFFReadDirectory(tif));
-		}
-		else if (spp * bps == 24)
-		{
-			int countLoop = 0;
-			// Loop over tiff stream
-			do {
-				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
-				countLoop++;
-				count = 0;
-				tsize_t scanline;
-				tdata_t buf;
-				uint32_t row;
-				uint32_t col;
-				
-				scanline = TIFFScanlineSize(tif);
-				buf = _TIFFmalloc(scanline);
-				uint32_t* data;
-				
-				fl_un = fopen(fileNameExport, "a");
-				
-				for (row = 0; row < dims[1]; row++)
-				{
-					TIFFReadScanline(tif, buf, row,1);
-					data = (uint32_t*)buf;
-					
-					for (col = 0; col < dims[0]; col++)
-					{
-						unsigned int im_int = (uintptr_t) *data;
-						fprintf(fl_un, "%d ", (short) im_int);
-						count++;
-						data++;
-					}
-				}
-				
-				fclose(fl_un);
-			} while (TIFFReadDirectory(tif));
-		}
-		else
-		{
-			printf("Error: Data not written to *.VTK");
-		}
-		
-	}
 
+	// Write *.VTK file
+
+	switch (switchASCIIorBINARY)
+	{
+		case 0:
+			printf("\nData type ASCII selected\n\n");
+			vtkHeaderASCII(fl_un, fileNameExport, fileNameImport, dims, spcng);
+			vtkDataASCII(tif, spp, bps, dims, fl_un);
+			break;
+		case 1:
+			printf("\nData type BINARY selected\n\n");
+			vtkHeaderBINARY(fl_un, fileNameExport, fileNameImport, dims, spcng);
+			vtkDataBINARY(tif, spp, bps, dims, fl_un);
+			break;
+		default:
+			printf("\nData type ASCII selected\n\n");
+			vtkHeaderASCII(fl_un, fileNameExport, fileNameImport, dims, spcng);
+			vtkDataASCII(tif, spp, bps, dims, fl_un);
+			break;
+	}
+	
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-	printf("Time = %f seconds \n", cpu_time_used);
+	printf("\nTime = %f seconds \n", cpu_time_used);
 
 	return 0;
 }
 
-int dispHeader(void)
+int asciiValueToBinary(int asciiInput)
+{
+	int res = 0;
+	int i = 1;
+	int rem;
+
+	while (asciiInput > 0)
+	{
+		rem = asciiInput % 2;
+		res = res + (i * rem);
+		asciiInput = asciiInput / 2;
+		i = i * 10;
+	}
+
+	return res;
+}
+
+void dispHeader(void)
 {
 	printf("######################################################\n");
 	printf("# tiff2vtk                                           #\n");
@@ -274,11 +219,9 @@ int dispHeader(void)
 	printf("# High Performance Computing Center Stuttgart (HLRS) #\n");
 	printf("# Date: 2021.05.05                                   #\n");
 	printf("######################################################\n\n");
-
-	return 0;
 }
 
-int dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp, int pin)
+void dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp, int pin)
 {
 	// Dimensions
 	printf("Dimensions: x = %d, y = %d, z = %d\n", dims[0], dims[1], dims[2]);
@@ -379,6 +322,278 @@ int dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp,
 	{
 		printf("(Not defined yet)\n");
 	}
+}
 
-	return 0;
+void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3])
+{
+	// Write *.VTK file (ASCII)
+
+	// Open *.VTK file
+	fl_un = fopen(fileNameExport, "w+");
+	// Part 1:Header
+	fprintf(fl_un, "# vtk DataFile Version 5.1\n");
+	// Part 2:Title (256 characters maximum, terminated with newline \n character)
+	fprintf(fl_un, "%s\n", fileNameImport);
+	// Part 3:Data type ASCII
+	fprintf(fl_un, "ASCII\n");
+	// Part 4:Geometry/topology.Type is one of: STRUCTURED_POINTS, STRUCTURED_GRID, UNSTRUCTURED_GRID, POLYDATA, RECTILINEAR_GRID, FIELD
+	fprintf(fl_un, "DATASET STRUCTURED_POINTS\n");
+	// Part4: DIMENSIONS nx ny nz
+	fprintf(fl_un, "DIMENSIONS %d %d %d\n", dims[0], dims[1], dims[2]);
+	// Part4: ORIGIN x y z
+	fprintf(fl_un, "ORIGIN 0 0 0\n");
+	// Part4: SPACING sx sy sz
+	fprintf(fl_un, "SPACING %f %f %f\n", spcng[0], spcng[1], spcng[2]);
+	// Part 5:Dataset attributes. The number of data items n of each type must match the numberof points or cells in the dataset. (If type is FIELD, point and cell data should be omitted.
+	fprintf(fl_un, "POINT_DATA %d\n", dims[0] * dims[1] * dims[2]);
+	fprintf(fl_un, "SCALARS DICOMImage short\n");
+	fprintf(fl_un, "LOOKUP_TABLE default\n");
+	fclose(fl_un);
+}
+
+void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3])
+{
+	// Write *.VTK file (ASCII)
+
+	//char* fileNameExportC = fileNameExport;
+	// Open *.VTK file
+	fl_un = fopen(fileNameExport, "w+");
+	// Part 1:Header
+	fprintf(fl_un, "# vtk DataFile Version 5.1\n");
+	// Part 2:Title (256 characters maximum, terminated with newline \n character)
+	fprintf(fl_un, "%s\n", fileNameImport);
+	// Part 3:Data type BINARY
+	fprintf(fl_un, "BINARY\n");
+	// Part 4:Geometry/topology.Type is one of: STRUCTURED_POINTS, STRUCTURED_GRID, UNSTRUCTURED_GRID, POLYDATA, RECTILINEAR_GRID, FIELD
+	fprintf(fl_un, "DATASET STRUCTURED_POINTS\n");
+	// Part4: DIMENSIONS nx ny nz
+	fprintf(fl_un, "DIMENSIONS %d %d %d\n", dims[0], dims[1], dims[2]);
+	// Part4: ORIGIN x y z
+	fprintf(fl_un, "ORIGIN 0 0 0\n");
+	// Part4: SPACING sx sy sz
+	fprintf(fl_un, "SPACING %f %f %f\n", spcng[0], spcng[1], spcng[2]);
+	// Part 5:Dataset attributes. The number of data items n of each type must match the numberof points or cells in the dataset. (If type is FIELD, point and cell data should be omitted.
+	fprintf(fl_un, "POINT_DATA %d\n", dims[0] * dims[1] * dims[2]);
+	fprintf(fl_un, "SCALARS DICOMImage short\n");
+	fprintf(fl_un, "LOOKUP_TABLE default\n");
+	fclose(fl_un);
+}
+
+void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
+{
+	int countLoop;
+	int row;
+	int col;
+
+	tsize_t scanline;
+	tdata_t buf;
+
+
+	// Check if the *.TIFF file is open
+	if (tif)
+	{
+		if (spp * bps == 8)
+		{
+			countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint8_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
+				{
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint8_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%d ", (short) im_int);
+						data++;
+					}
+				}
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else if (spp * bps == 16)
+		{
+			countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint16_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
+				{
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint16_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%d ", (short) im_int);
+						data++;
+					}
+				}
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else if (spp * bps == 24)
+		{
+			countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint32_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
+				{
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint32_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%d ", (short) im_int);
+						data++;
+					}
+				}
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else
+		{
+			printf("Error: Data not written to *.VTK");
+		}
+	}
+}
+
+void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
+{
+	int countLoop;
+	int row;
+	int col;
+
+	tsize_t scanline;
+	tdata_t buf;
+
+	// Check if the *.TIFF file is open
+	if (tif)
+	{
+		if (spp * bps == 8)
+		{
+			countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint8_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
+				{
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint8_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%c ", asciiValueToBinary(im_int));
+						data++;
+					}
+				}
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else if (spp * bps == 16)
+		{
+			countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint16_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
+				{
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint16_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%c ", asciiValueToBinary(im_int));
+						data++;
+					}
+				}
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else if (spp * bps == 24)
+		{
+			countLoop = 0;
+			// Loop over tiff stream
+			do {
+				printf("Image %d of %d scaned\n", countLoop, dims[2] - 1);
+				countLoop++;
+				
+				scanline = TIFFScanlineSize(tif);
+				buf = _TIFFmalloc(scanline);
+				uint32_t* data;
+				
+				fl_un = fopen(fileNameExport, "a");
+				
+				for (row = 0; row < dims[1]; row++)
+				{
+					TIFFReadScanline(tif, buf, row,1);
+					data = (uint32_t*)buf;
+					
+					for (col = 0; col < dims[0]; col++)
+					{
+						unsigned int im_int = (uintptr_t) *data;
+						fprintf(fl_un, "%c ", asciiValueToBinary(im_int));
+						data++;
+					}
+				}
+				
+				fclose(fl_un);
+			} while (TIFFReadDirectory(tif));
+		}
+		else
+		{
+			printf("Error: Data not written to *.VTK");
+		}
+	}
 }
