@@ -29,6 +29,7 @@ void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
 // Variable declaration
 char* fileNameImport;
 char* fileNameExport;
+char *p;
 
 int debug;
 int switchASCIIorBINARY;
@@ -54,7 +55,7 @@ int main(int argc, char** argv)
 	dispHeader();
 
 	// Debug mode (0 = false, 1 = true)
-	debug = 1;
+	debug = 0;
 
 	switch (debug)
 	{
@@ -63,7 +64,7 @@ int main(int argc, char** argv)
 
 		fileNameExport = argv[2];
 
-		switchASCIIorBINARY = argc;
+		switchASCIIorBINARY = strtol(argv[3], &p, 10);
 		break;
 	case 1:
 		fileNameImport = "Multi_page24bpp.tif";
