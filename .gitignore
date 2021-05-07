@@ -3,6 +3,8 @@ tiff2vtk
 *.vtk
 *.tif
 *.tiff
+.vscode
+.vscode/
 
 # exclude everything
 build/*
