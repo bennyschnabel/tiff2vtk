@@ -23,21 +23,25 @@ sudo apt install libtiff-dev
 ```
 ## Usage
 
+### Compilation
+
 To run this project, compile it like:
 ```
-gcc -Wall -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
+gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
 ./build/tiff2vtk tiff_file_name vtk_file_name
 ```
 
-Example:
+### Example
 ```
-gcc -Wall -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
+gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
 ./build/tiff2vtk Knochenprobe2stream.tiff Knochenprobe2stream.vtk
 ```
 
 ## Additional information
 
 [VTK File Formats](https://vtk.org/wp-content/uploads/2015/04/file-formats.pdf)
+
+[TIFF Specification](https://www.itu.int/itudoc/itu-t/com16/tiff-fx/docs/tiff6.pdf)
 
 ## TODO / Known bugs
 
