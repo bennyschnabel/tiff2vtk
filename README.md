@@ -11,7 +11,7 @@ Conversion of multipage *.TIFF files to *.VTK file format.
 - [Requirements](#requirements)
 - [Usage](#usage)
 - [Additional information](#additional-information)
-- [TODO / Known bugs](#todo--known-bugs)
+- [Todo list](#todo-list)
 - [License](#license)
 
 ## Example
@@ -65,11 +65,9 @@ gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/main.c -ltiff -o build/tiff
 
 [TIFF Specification](https://www.itu.int/itudoc/itu-t/com16/tiff-fx/docs/tiff6.pdf)
 
-## TODO / Known bugs
+## Todo list
 
-- [ ] CMake
-- [ ] TIFFReadDirectory: Warning, Unknown field with tag 59932 (0xea1c) encountered
-- [ ] Image is compressed with the following configuration: SamplesPerPixel = 3, BitsPerSample = 8
+[TODO.md](https://github.com/bennyschnabel/tiff2vtk/blob/main/TODO.md)
 
 ## License
 
