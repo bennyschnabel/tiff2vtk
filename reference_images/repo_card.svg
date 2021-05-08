@@ -98,8 +98,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.69999999"
-     inkscape:cx="643.90733"
-     inkscape:cy="384.44454"
+     inkscape:cx="501.76447"
+     inkscape:cy="338.73025"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -169,7 +169,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 2">
+     inkscape:label="Layer 2"
+     style="display:none">
     <g
        transform="matrix(0.64766248,0,0,0.64766248,222.85373,14.11113)"
        inkscape:label="hlrs_logo"
@@ -252,5 +253,28 @@
    id="tspan1201">tiff</tspan>2<tspan
    style="fill:#231f20;fill-opacity:1"
    id="tspan1223">vtk</tspan></tspan></text>
+  </g>
+  <g
+     inkscape:label="Layer 3"
+     id="g930"
+     inkscape:groupmode="layer"
+     style="display:inline">
+    <text
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       id="text928"
+       y="120.21786"
+       x="12.499145"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:50.79999924px;line-height:1.25;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans';letter-spacing:0px;word-spacing:0px;fill:#00adef;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:102.30555725px;font-family:'CMU Bright';-inkscape-font-specification:'CMU Bright, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#00adef;fill-opacity:1;stroke-width:0.26458332"
+         y="120.21786"
+         x="12.499145"
+         id="tspan926"
+         sodipodi:role="line"><tspan
+   id="tspan922"
+   style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:102.30555725px;font-family:'CMU Bright';-inkscape-font-specification:'CMU Bright, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#231f20;fill-opacity:1">tiff</tspan>2<tspan
+   id="tspan924"
+   style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:102.30555725px;font-family:'CMU Bright';-inkscape-font-specification:'CMU Bright, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#231f20;fill-opacity:1">vtk</tspan></tspan></text>
   </g>
 </svg>
