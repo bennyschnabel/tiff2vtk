@@ -1,5 +1,9 @@
 # tiff2vtk
 
+<p align="center">
+<img src="reference_images/repo_card.svg" alt="Logo" width="80" height="80">
+</p>
+
 Conversion of multipage *.TIFF files to *.VTK file format.
 
 ## Example
