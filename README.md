@@ -5,6 +5,15 @@
 Conversion of multipage *.TIFF files to *.VTK file format.
 </p>
 
+## Table of contents
+
+- [Example](#example)
+- [Requirements](#requirements)
+- [Usage](#usage)
+- [Additional information](#additional-information)
+- [TODO / Known bugs](#todo--known-bugs)
+- [License](#license)
+
 ## Example
 
 Initial image| Converted file
