@@ -1,10 +1,8 @@
 
 <p align="center">
-<img src="https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/repo_card.png" alt="Logo" width="250" height="125">
-<h3 align="center">tiff2vtk</h3>
-<p align="center">
+<img src="https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/repo_card.png" alt="Logo" width="300" height="150">
+<br>
 Conversion of multipage *.TIFF files to *.VTK file format.
-</p>
 </p>
 
 ## Example
