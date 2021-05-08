@@ -1,10 +1,11 @@
-# tiff2vtk
 
 <p align="center">
-<img src="reference_images/repo_card.svg" alt="Logo" width="80" height="80">
-</p>
-
+<img src="reference_images/repo_card.svg" alt="Logo" width="250" height="125">
+<h3 align="center">tiff2vtk</h3>
+<p align="center">
 Conversion of multipage *.TIFF files to *.VTK file format.
+</p>
+</p>
 
 ## Example
 
