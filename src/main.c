@@ -517,6 +517,7 @@ void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 		else
 		{
 			printf("Error: Data not written to *.VTK");
+			void abort(void);
 		}
 	}
 }
@@ -566,11 +567,6 @@ void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 				
 				fclose(fl_un);
 			} while (TIFFReadDirectory(tif));
-
-			fl_un = fopen(fileNameExport, "a");
-			fprintf(fl_un, "METADATA\n");
-			fprintf(fl_un, "INFORMATION 0\n");
-			fclose(fl_un);
 		}
 		else if (spp * bps == 16)
 		{
@@ -635,6 +631,16 @@ void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 		else
 		{
 			printf("Error: Data not written to *.VTK");
+			void abort(void);
 		}
+	}
+
+	if(tif)
+	{
+		// Required information for binary vtk
+		fl_un = fopen(fileNameExport, "a");
+		fprintf(fl_un, "METADATA\n");
+		fprintf(fl_un, "INFORMATION 0\n");
+		fclose(fl_un);
 	}
 }
