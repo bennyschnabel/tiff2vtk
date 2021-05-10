@@ -14,6 +14,7 @@
 #include <math.h>
 #include <time.h>
 #include <assert.h>
+#include <unistd.h>
 // LibTIFF - TIFF Library and Utilities
 #include <tiffio.h>
 
@@ -25,6 +26,7 @@ void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int
 void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3]);
 void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
 void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
+void logHeader(FILE *fl_log);
 
 // Variable declaration
 char* fileNameImport;
@@ -44,6 +46,7 @@ int dims[3];
 float spcng[3];
 
 FILE *fl_un;
+FILE *fl_log;
 
 clock_t start, end;
 double cpu_time_used;
@@ -54,40 +57,46 @@ double cpu_time_used;
 
 int main(int argc, char** argv)
 {
+	// Start of calculation time
 	start = clock();
 
 	(void)argc;
 
+	// Create log file
+	fl_log  = fopen("log/data.log", "w");
+	logHeader(fl_log);
+
+	// Display general information about tiff2vtk
 	dispHeader();
 
-	// Debug mode (0 = false, 1 = true)
-	debug = 0;
+	// Get file name for import and check if exists
+	fileNameImport = argv[1];
 
-	switch (debug)
+	if( access( fileNameImport, F_OK ) == 0 ) {
+		//
+	}
+	else
 	{
-	case 0:
-		fileNameImport = argv[1];
+		printf("*.TIFF/ *.TIF file not found.\n");
 
-		fileNameExport = argv[2];
+		printf("Enter file name and path (relative): ");
+		scanf("%s", fileNameImport);
+	}
 
-		switchASCIIorBINARY = strtol(argv[3], &p, 10);
-		break;
-	case 1:
-		fileNameImport = "Multi_page24bpp.tif";
-		fileNameImport = "multipage_tiff_example.tif";
-		fileNameImport = "Knochenprobe2stream.tiff";
+	// Get file name (and path) for export
+	fileNameExport = argv[2];
 
-		fileNameExport = "test.vtk";
-
-		switchASCIIorBINARY = 0;
-		break;
-	default:
-		fileNameImport = "";
-		
-		fileNameExport = "";
-
-		switchASCIIorBINARY = 0;
-		break;
+	// Get ASCII or BINARY selection
+	switchASCIIorBINARY = strtol(argv[3], &p, 10);
+	if (switchASCIIorBINARY == 0 || switchASCIIorBINARY == 1)
+	{
+		//
+	}
+	else
+	{
+		printf("ASCII or BINARY selection selection not recognized.\n");
+		printf("Select ASCII [0] or BINARY [1]: ");
+		scanf("%d", &switchASCIIorBINARY);
 	}
 
 	// Open *.TIFF file
@@ -192,6 +201,9 @@ int main(int argc, char** argv)
 			vtkDataASCII(tif, spp, bps, dims, fl_un);
 			break;
 	}
+
+	// Close log file
+	fclose(fl_log);
 	
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -643,4 +655,14 @@ void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 		fprintf(fl_un, "INFORMATION 0\n");
 		fclose(fl_un);
 	}
+}
+
+
+// *******************
+// * logHeader() *
+// *******************
+
+void logHeader(FILE *fl_log)
+{
+	fprintf(fl_log, "# vtk DataFile Version 5.1\n");
 }
