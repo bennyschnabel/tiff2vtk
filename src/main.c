@@ -66,6 +66,7 @@ int main(int argc, char** argv)
 
 	// Create log file
 	fl_log  = fopen("log/data.log", "w");
+	// Create header of log file
 	logHeader(fl_log);
 
 	// Display general information about tiff2vtk
@@ -101,7 +102,8 @@ int main(int argc, char** argv)
 		scanf("%d", &switchASCIIorBINARY);
 	}
 
-	logFileInformation(fl_log, fileNameImport, fileNameExport);
+	// Log file information 
+	logFileInformation(fl_log, fileNameImport, fileNameExport, switchASCIIorBINARY);
 
 	// Open *.TIFF file
 	TIFF* tif = TIFFOpen(fileNameImport, "r");

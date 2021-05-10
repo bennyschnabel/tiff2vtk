@@ -1,16 +1,9 @@
 #include <stdio.h>
 
-#ifndef LOG_DOT_H    /* This is an "include guard" */
-#define LOG_DOT_H    /* prevents the file from being included twice. */
-                     /* Including a header file twice causes all kinds */
-                     /* of interesting problems.*/
-
-/**
- * This is a function declaration.
- * It tells the compiler that the function exists somewhere.
- */
+#ifndef LOG_DOT_H
+#define LOG_DOT_H
 
 void logHeader(FILE *fl_log);
-void logFileInformation(FILE *fl_log, char* fileNameImport, char* fileNameExport);
+void logFileInformation(FILE *fl_log, char* fileNameImport, char* fileNameExport, int switchASCIIorBINARY);
 
-#endif /* LOG_DOT_H */
+#endif

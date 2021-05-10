@@ -18,7 +18,7 @@ Conversion of multipage *.TIFF files to *.VTK file format.
 
 Initial image| Converted file
 --- | ---
-![*.TIFF](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream.png) | ![*.VTK](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream_vtk.png)
+![*.TIFF](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream_tiff.png) | ![*.VTK](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream_vtk.png)
 *.TIFF | *.VTK - Rendered with [ParaView](https://www.paraview.org/)
 
 ## Requirements
@@ -28,9 +28,10 @@ Initial image| Converted file
 Libtiff is a library for reading and writing Tagged Image File Format (abbreviated TIFF) files [[WIKIPEDIA]](https://en.wikipedia.org/wiki/Libtiff).
 
 Install:
-```
-sudo apt update
-sudo apt install libtiff-dev
+
+```console
+foo@bar:~$ sudo apt update
+foo@bar:~$ sudo apt install libtiff-dev
 ```
 ## Usage
 
