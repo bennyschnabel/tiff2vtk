@@ -28,6 +28,16 @@ Initial image| Converted file
 
 ## Requirements
 
+### GNU Compiler Collection
+
+The GNU Compiler Collection (GCC) is an optimizing compiler produced by the GNU Project supporting various programming languages, hardware architectures and operating systems. The Free Software Foundation (FSF) distributes GCC as free software under the GNU General Public License (GNU GPL) [[WIKIPEDIA]](https://en.wikipedia.org/wiki/GNU_Compiler_Collection). 
+
+Install:
+
+```console
+foo@bar:~$ sudo apt-get install build-essential 
+```
+
 ### LibTIFF - TIFF Library and Utilities
 
 Libtiff is a library for reading and writing Tagged Image File Format (abbreviated TIFF) files [[WIKIPEDIA]](https://en.wikipedia.org/wiki/Libtiff).
@@ -38,15 +48,24 @@ Install:
 foo@bar:~$ sudo apt update
 foo@bar:~$ sudo apt install libtiff-dev
 ```
+
 ## Usage
 
-### Compilation and execution
+### Compilation (Terminal)
 
 For example, comipilate the program as follows:
 
 ```console
 foo@bar:~$ gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/log.c src/main.c -ltiff -o build/tiff2vtk
 ```
+
+### Compilation (Makefile)
+
+```console
+foo@bar:~$ make
+```
+
+### Execution
 
 To execute the program, the following arguments are passed to the command line:
 - `tiff_file_name`: Filename of the *.TIFF file to be read in
