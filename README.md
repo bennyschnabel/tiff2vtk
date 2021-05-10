@@ -37,8 +37,9 @@ sudo apt install libtiff-dev
 ### Compilation and execution
 
 For example, comipilate the program as follows:
-```
-gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
+
+```console
+foo@bar:~$ gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/log.c src/main.c -ltiff -o build/tiff2vtk
 ```
 
 To execute the program, the following arguments are passed to the command line:
@@ -46,17 +47,17 @@ To execute the program, the following arguments are passed to the command line:
 - `vtk_file_name`: Filename of the *.VTK file to be saved
 - `binary_or_ascii`: Save the data in ASCII or BINARY format, where `0` = ASCII and `1` = BINARY.
 
-```
-./build/tiff2vtk tiff_file_name vtk_file_name binary_or_ascii
+```console
+foo@bar:~$ ./build/tiff2vtk tiff_file_name vtk_file_name binary_or_ascii
 ```
 
 ### Example
 
-Conversion of the Knochenprobe2stream.tiff file to the Knochenprobe2stream.vtk file, where the data type is ASCII.
+Conversion of the Knochenprobe2stream.tiff file to the Knochenprobe2stream.vtk file, where the data type is ASCII. And it is a good practice to place the *.TIFF and *.VTK files in the datasets folder.
 
-```
-gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/main.c -ltiff -o build/tiff2vtk
-./build/tiff2vtk Knochenprobe2stream.tiff Knochenprobe2stream.vtk 0
+```console
+foo@bar:~$ gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/log.c src/main.c -ltiff -o build/tiff2vtk
+foo@bar:~$ ./build/tiff2vtk datasets/Knochenprobe2stream.tiff datasets/Knochenprobe2stream.vtk 1
 ```
 
 ## Additional information

@@ -18,6 +18,8 @@
 // LibTIFF - TIFF Library and Utilities
 #include <tiffio.h>
 
+#include "log.h"
+
 // Function declaration
 int asciiValueToBinary(int asciiInput);
 void dispHeader(void);
@@ -26,7 +28,7 @@ void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int
 void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3]);
 void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
 void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
-void logHeader(FILE *fl_log);
+//void logHeader(FILE *fl_log);
 
 // Variable declaration
 char* fileNameImport;
@@ -98,6 +100,8 @@ int main(int argc, char** argv)
 		printf("Select ASCII [0] or BINARY [1]: ");
 		scanf("%d", &switchASCIIorBINARY);
 	}
+
+	logFileInformation(fl_log, fileNameImport, fileNameExport);
 
 	// Open *.TIFF file
 	TIFF* tif = TIFFOpen(fileNameImport, "r");
@@ -655,14 +659,4 @@ void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un)
 		fprintf(fl_un, "INFORMATION 0\n");
 		fclose(fl_un);
 	}
-}
-
-
-// *******************
-// * logHeader() *
-// *******************
-
-void logHeader(FILE *fl_log)
-{
-	fprintf(fl_log, "# vtk DataFile Version 5.1\n");
 }
