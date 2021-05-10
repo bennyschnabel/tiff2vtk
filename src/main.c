@@ -184,6 +184,8 @@ int main(int argc, char** argv)
 		TIFFGetField(tif, TIFFTAG_PHOTOMETRIC, &pin);
 
 		dispInformationTIFF(dims, spcng, spp, bps, comp, pin);
+
+		logTiffInformation(fl_log, dims, spcng, spp, bps, comp, pin);
 	}
 
 	// Write *.VTK file
@@ -218,9 +220,9 @@ int main(int argc, char** argv)
 	return (0);
 }
 
-// ************************
-// * asciiValueToBinary() *
-// ************************
+// **************************************
+// * asciiValueToBinary(int asciiInput) *
+// **************************************
 
 int asciiValueToBinary(int asciiInput)
 {
@@ -239,9 +241,9 @@ int asciiValueToBinary(int asciiInput)
 	return res;
 }
 
-// ************************
-// * dispHeader()         *
-// ************************
+// ********************
+// * dispHeader(void) *
+// ********************
 
 void dispHeader(void)
 {
