@@ -13,6 +13,10 @@ void logHeader(FILE *fl_log)
 	fprintf(fl_log, "# High Performance Computing Center Stuttgart (HLRS) #\n");
 	fprintf(fl_log, "# Date: 2021.05.05                                   #\n");
 	fprintf(fl_log, "######################################################\n\n");
+
+    time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+	fprintf(fl_log, "Date: %d-%02d-%02d %02d:%02d:%02d\n\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
 // *********************************************************************************************************
@@ -21,26 +25,31 @@ void logHeader(FILE *fl_log)
 
 void logFileInformation(FILE *fl_log, char* fileNameImport, char* fileNameExport, int switchASCIIorBINARY)
 {
-    fprintf(fl_log, "Import file (*.TIFF): %s\n", fileNameImport);
-    fprintf(fl_log, "Export file (*.VTK): %s\n", fileNameExport);
+	fprintf(fl_log, "Import file (*.TIFF): %s\n", fileNameImport);
+	fprintf(fl_log, "Export file (*.VTK): %s\n", fileNameExport);
 
-    if(switchASCIIorBINARY == 0)
-    {
-        fprintf(fl_log, "Data of the *.VTK file are saved in ASCII format\n\n");
-    }
-    else if(switchASCIIorBINARY == 1)
-    {
-        fprintf(fl_log, "Data of the *.VTK file are saved in BINARY format\n\n");
-    }
-    else
-    {
-        fprintf(fl_log, "Data of the *.VTK file are saved in ASCII format\n\n");
-    }
+	if(switchASCIIorBINARY == 0)
+	{
+		fprintf(fl_log, "Data of the *.VTK file are saved in ASCII format\n\n");
+	}
+	else if(switchASCIIorBINARY == 1)
+	{
+		fprintf(fl_log, "Data of the *.VTK file are saved in BINARY format\n\n");
+	}
+	else
+	{
+		fprintf(fl_log, "Data of the *.VTK file are saved in ASCII format\n\n");
+	}
 }
+
+// ******************************************************************************************************
+// * logTiffInformation(FILE *fl_log, int dims[3], float spcng[3], int spp, int bps, int comp, int pin) *
+// ******************************************************************************************************
 
 void logTiffInformation(FILE *fl_log, int dims[3], float spcng[3], int spp, int bps, int comp, int pin)
 {
-    fprintf(fl_log, "TIFF image information:\n");
+	fprintf(fl_log, "TIFF image information:\n");
+
 	// Dimensions
 	fprintf(fl_log, "Dimensions: x = %d, y = %d, z = %d\n", dims[0], dims[1], dims[2]);
 
@@ -140,4 +149,13 @@ void logTiffInformation(FILE *fl_log, int dims[3], float spcng[3], int spp, int 
 	{
 		fprintf(fl_log, "(Not defined yet)\n");
 	}
+}
+
+// **********************************************************
+// * logCalculationTime(FILE *fl_log, double cpu_time_used) *
+// **********************************************************
+
+void logCalculationTime(FILE *fl_log, double cpu_time_used)
+{
+	fprintf(fl_log, "\nCPU time used = %f seconds", cpu_time_used);
 }

@@ -208,13 +208,17 @@ int main(int argc, char** argv)
 			vtkDataASCII(tif, spp, bps, dims, fl_un);
 			break;
 	}
-
-	// Close log file
-	fclose(fl_log);
 	
+	// End calculation time
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	printf("\nTime = %f seconds \n", cpu_time_used);
+
+	// Log calculation time
+	logCalculationTime(fl_log, cpu_time_used);
+
+	// Close log file
+	fclose(fl_log);
 
 	/* Return */
 	return (0);
