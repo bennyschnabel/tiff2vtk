@@ -1,4 +1,3 @@
-
 <p align="center">
 <img src="https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/repo_card.png" alt="Logo" width="300" height="150">
 <br>
@@ -20,6 +19,7 @@ Initial image| Converted file
 --- | ---
 ![*.TIFF](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream_tiff.png) | ![*.VTK](https://github.com/bennyschnabel/tiff2vtk/blob/main/reference_images/Knochenprobe2stream_vtk.png)
 *.TIFF | *.VTK - Rendered with [ParaView](https://www.paraview.org/)
+&nbsp; | Data type BINARY
 
 ## Requirements
 
@@ -54,7 +54,7 @@ foo@bar:~$ ./build/tiff2vtk tiff_file_name vtk_file_name binary_or_ascii
 
 ### Example
 
-Conversion of the Knochenprobe2stream.tiff file to the Knochenprobe2stream.vtk file, where the data type is ASCII. And it is a good practice to place the *.TIFF and *.VTK files in the datasets folder.
+Conversion of the Knochenprobe2stream.tiff file to the Knochenprobe2stream.vtk file, where the data type is BINARY. And it is a good practice to place the *.TIFF and *.VTK files in the datasets folder.
 
 ```console
 foo@bar:~$ gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/log.c src/main.c -ltiff -o build/tiff2vtk

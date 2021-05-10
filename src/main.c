@@ -24,8 +24,7 @@
 int asciiValueToBinary(int asciiInput);
 void dispHeader(void);
 void dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp, int pin);
-void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3]);
-void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3]);
+void vtkHeader(FILE *fl_un, char *fileNameExport, char *fileNameImport, int switchASCIIorBINARY, int dims[3], float spcng[3]);
 void vtkDataASCII(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
 void vtkDataBINARY(TIFF* tif, int spp, int bps, int dims[3], FILE *fl_un);
 //void logHeader(FILE *fl_log);
@@ -193,17 +192,17 @@ int main(int argc, char** argv)
 	{
 		case 0:
 			printf("\nData type ASCII selected\n\n");
-			vtkHeaderASCII(fl_un, fileNameExport, fileNameImport, dims, spcng);
+			vtkHeader(fl_un, fileNameExport, fileNameImport, switchASCIIorBINARY, dims, spcng);
 			vtkDataASCII(tif, spp, bps, dims, fl_un);
 			break;
 		case 1:
 			printf("\nData type BINARY selected\n\n");
-			vtkHeaderBINARY(fl_un, fileNameExport, fileNameImport, dims, spcng);
+			vtkHeader(fl_un, fileNameExport, fileNameImport, switchASCIIorBINARY, dims, spcng);
 			vtkDataBINARY(tif, spp, bps, dims, fl_un);
 			break;
 		default:
 			printf("\nData type ASCII selected\n\n");
-			vtkHeaderASCII(fl_un, fileNameExport, fileNameImport, dims, spcng);
+			vtkHeader(fl_un, fileNameExport, fileNameImport, switchASCIIorBINARY, dims, spcng);
 			vtkDataASCII(tif, spp, bps, dims, fl_un);
 			break;
 	}
@@ -362,11 +361,11 @@ void dispInformationTIFF(int dims[3], float spcng[3], int spp, int bps, int comp
 	}
 }
 
-// ********************
-// * vtkHeaderASCII() *
-// ********************
+// ****************************************************************************************************************************
+// * vtkHeader(FILE *fl_un, char *fileNameExport, char *fileNameImport, int switchASCIIorBINARY, int dims[3], float spcng[3]) *
+// ****************************************************************************************************************************
 
-void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3])
+void vtkHeader(FILE *fl_un, char *fileNameExport, char *fileNameImport, int switchASCIIorBINARY, int dims[3], float spcng[3])
 {
 	// Write *.VTK file (ASCII)
 
@@ -376,40 +375,22 @@ void vtkHeaderASCII(FILE *fl_un, char *fileNameExport, char *fileNameImport, int
 	fprintf(fl_un, "# vtk DataFile Version 5.1\n");
 	// Part 2:Title (256 characters maximum, terminated with newline \n character)
 	fprintf(fl_un, "%s\n", fileNameImport);
-	// Part 3:Data type ASCII
-	fprintf(fl_un, "ASCII\n");
-	// Part 4:Geometry/topology.Type is one of: STRUCTURED_POINTS, STRUCTURED_GRID, UNSTRUCTURED_GRID, POLYDATA, RECTILINEAR_GRID, FIELD
-	fprintf(fl_un, "DATASET STRUCTURED_POINTS\n");
-	// Part4: DIMENSIONS nx ny nz
-	fprintf(fl_un, "DIMENSIONS %d %d %d\n", dims[0], dims[1], dims[2]);
-	// Part4: ORIGIN x y z
-	fprintf(fl_un, "ORIGIN 0 0 0\n");
-	// Part4: SPACING sx sy sz
-	fprintf(fl_un, "SPACING %f %f %f\n", spcng[0], spcng[1], spcng[2]);
-	// Part 5:Dataset attributes. The number of data items n of each type must match the numberof points or cells in the dataset. (If type is FIELD, point and cell data should be omitted.
-	fprintf(fl_un, "POINT_DATA %d\n", dims[0] * dims[1] * dims[2]);
-	fprintf(fl_un, "SCALARS DICOMImage short\n");
-	fprintf(fl_un, "LOOKUP_TABLE default\n");
-	fclose(fl_un);
-}
-
-// *********************
-// * vtkHeaderBINARY() *
-// *********************
-
-void vtkHeaderBINARY(FILE *fl_un, char *fileNameExport, char *fileNameImport, int dims[3], float spcng[3])
-{
-	// Write *.VTK file (ASCII)
-
-	//char* fileNameExportC = fileNameExport;
-	// Open *.VTK file
-	fl_un = fopen(fileNameExport, "w+");
-	// Part 1:Header
-	fprintf(fl_un, "# vtk DataFile Version 5.1\n");
-	// Part 2:Title (256 characters maximum, terminated with newline \n character)
-	fprintf(fl_un, "%s\n", fileNameImport);
-	// Part 3:Data type BINARY
-	fprintf(fl_un, "BINARY\n");
+	// Part 3:Data type ASCII or BINARY
+	if(switchASCIIorBINARY == 0)
+	{
+		// Data type ASCII
+		fprintf(fl_un, "ASCII\n");
+	}
+	else if(switchASCIIorBINARY == 1)
+	{
+		// Data type BINARY
+		fprintf(fl_un, "BINARY\n");
+	}
+	else
+	{
+		// Data type ASCII (fallback)
+		fprintf(fl_un, "ASCII\n");
+	}
 	// Part 4:Geometry/topology.Type is one of: STRUCTURED_POINTS, STRUCTURED_GRID, UNSTRUCTURED_GRID, POLYDATA, RECTILINEAR_GRID, FIELD
 	fprintf(fl_un, "DATASET STRUCTURED_POINTS\n");
 	// Part4: DIMENSIONS nx ny nz
