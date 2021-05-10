@@ -128,7 +128,6 @@ int main(int argc, char** argv)
 		{
 			// TODO
 			printf("Error in spacing!\n");
-			// Log spacing error
 			logErrorSpacing(fl_log, spcng);
 			void abort(void);
 		}
@@ -195,23 +194,22 @@ int main(int argc, char** argv)
 	switch (switchASCIIorBINARY)
 	{
 		case 0:
-			printf("\nData type ASCII selected\n\n");
 			vtkHeader(fl_un, fileNameExport, fileNameImport, switchASCIIorBINARY, dims, spcng);
 			vtkDataASCII(tif, spp, bps, dims, fl_un);
 			break;
 		case 1:
-			printf("\nData type BINARY selected\n\n");
 			vtkHeader(fl_un, fileNameExport, fileNameImport, switchASCIIorBINARY, dims, spcng);
 			vtkDataBINARY(tif, spp, bps, dims, fl_un);
 			break;
 		default:
-			printf("\nData type ASCII selected\n\n");
+			// Fallback
 			vtkHeader(fl_un, fileNameExport, fileNameImport, switchASCIIorBINARY, dims, spcng);
 			vtkDataASCII(tif, spp, bps, dims, fl_un);
 			break;
 	}
+
 	
-	// End calculation time
+	
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	printf("\nTime = %f seconds \n", cpu_time_used);
