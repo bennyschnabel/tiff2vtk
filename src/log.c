@@ -42,6 +42,15 @@ void logFileInformation(FILE *fl_log, char* fileNameImport, char* fileNameExport
 	}
 }
 
+// *************************************************
+// * logErrorSpacing(FILE *fl_log, float spcng[3]) *
+// *************************************************
+
+void logErrorSpacing(FILE *fl_log, float spcng[3])
+{
+	fprintf(fl_log, "Error in spacing\nx = %f, y = %f\n\n", spcng[0], spcng[1]);
+}
+
 // ******************************************************************************************************
 // * logTiffInformation(FILE *fl_log, int dims[3], float spcng[3], int spp, int bps, int comp, int pin) *
 // ******************************************************************************************************

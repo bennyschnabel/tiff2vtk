@@ -127,7 +127,9 @@ int main(int argc, char** argv)
 		else 
 		{
 			// TODO
-			printf("Error in spacing!");
+			printf("Error in spacing!\n");
+			// Log spacing error
+			logErrorSpacing(fl_log, spcng);
 			void abort(void);
 		}
 

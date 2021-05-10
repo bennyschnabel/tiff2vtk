@@ -6,12 +6,17 @@ Conversion of multipage *.TIFF files to *.VTK file format.
 
 ## Table of contents
 
+- [Description](#description)
 - [Example](#example)
 - [Requirements](#requirements)
 - [Usage](#usage)
 - [Additional information](#additional-information)
 - [Todo list](#todo-list)
 - [License](#license)
+
+## Description
+
+tiff2vtk converts multipage *.TIFF files to *.VTK files. For this vtk DataFile version 5.1 is used.
 
 ## Example
 

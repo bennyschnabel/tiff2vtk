@@ -8,5 +8,6 @@ void logHeader(FILE *fl_log);
 void logFileInformation(FILE *fl_log, char* fileNameImport, char* fileNameExport, int switchASCIIorBINARY);
 void logTiffInformation(FILE *fl_log, int dims[3], float spcng[3], int spp, int bps, int comp, int pin);
 void logCalculationTime(FILE *fl_log, double cpu_time_used);
+void logErrorSpacing(FILE *fl_log, float spcng[3]);
 
 #endif
