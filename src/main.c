@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 	switchASCIIorBINARY = strtol(argv[3], &p, 10);
 	if (switchASCIIorBINARY == 0 || switchASCIIorBINARY == 1)
 	{
-		//
+		// Pass
 	}
 	else
 	{
@@ -128,7 +128,9 @@ int main(int argc, char** argv)
 		{
 			// TODO
 			printf("Error in spacing!\n");
+			// Log spacing error
 			logErrorSpacing(fl_log, spcng);
+			// Abort execution
 			void abort(void);
 		}
 
@@ -208,8 +210,7 @@ int main(int argc, char** argv)
 			break;
 	}
 
-	
-	
+	// End calculation time
 	end = clock();
 	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 	printf("\nTime = %f seconds \n", cpu_time_used);
