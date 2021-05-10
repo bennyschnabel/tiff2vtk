@@ -30,11 +30,12 @@ Initial image| Converted file
 
 ### GNU Compiler Collection
 
-The GNU Compiler Collection (GCC) is an optimizing compiler produced by the GNU Project supporting various programming languages, hardware architectures and operating systems. The Free Software Foundation (FSF) distributes GCC as free software under the GNU General Public License (GNU GPL) [[WIKIPEDIA]](https://en.wikipedia.org/wiki/GNU_Compiler_Collection). 
+The GNU Compiler Collection (GCC) is an optimizing compiler produced by the GNU Project supporting various programming languages, hardware architectures and operating systems [[WIKIPEDIA]](https://en.wikipedia.org/wiki/GNU_Compiler_Collection). 
 
 Install:
 
 ```console
+foo@bar:~$ sudo apt update
 foo@bar:~$ sudo apt-get install build-essential 
 ```
 
@@ -50,6 +51,8 @@ foo@bar:~$ sudo apt install libtiff-dev
 ```
 
 ## Usage
+
+Compilation is done either via the terminal or via the Makefile
 
 ### Compilation (Terminal)
 
