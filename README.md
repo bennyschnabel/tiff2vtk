@@ -30,7 +30,7 @@ Initial image| Converted file
 
 ### GNU Compiler Collection
 
-The GNU Compiler Collection (GCC) is an optimizing compiler produced by the GNU Project supporting various programming languages, hardware architectures and operating systems [[WIKIPEDIA]](https://en.wikipedia.org/wiki/GNU_Compiler_Collection). 
+The GNU Compiler Collection (GCC) is an optimizing compiler produced by the GNU Project supporting various programming languages, hardware architectures and operating systems [[Wikipedia]](https://en.wikipedia.org/wiki/GNU_Compiler_Collection). 
 
 Install:
 
@@ -47,7 +47,7 @@ Install:
 
 ```console
 foo@bar:~$ sudo apt update
-foo@bar:~$ sudo apt install libtiff-dev
+foo@bar:~$ sudo apt-get install libtiff-dev
 ```
 
 ## Usage
@@ -73,10 +73,10 @@ foo@bar:~$ make
 To execute the program, the following arguments are passed to the command line:
 - `tiff_file_name`: Filename of the *.TIFF file to be read in
 - `vtk_file_name`: Filename of the *.VTK file to be saved
-- `binary_or_ascii`: Save the data in ASCII or BINARY format, where `0` = ASCII and `1` = BINARY.
+- `ascii_or_binary`: Save the data in ASCII or BINARY format, where `0` = ASCII and `1` = BINARY.
 
 ```console
-foo@bar:~$ ./build/tiff2vtk tiff_file_name vtk_file_name binary_or_ascii
+foo@bar:~$ ./build/tiff2vtk tiff_file_name vtk_file_name ascii_or_binary
 ```
 
 ### Example
@@ -84,7 +84,7 @@ foo@bar:~$ ./build/tiff2vtk tiff_file_name vtk_file_name binary_or_ascii
 Conversion of the Knochenprobe2stream.tiff file to the Knochenprobe2stream.vtk file, where the data type is BINARY. And it is a good practice to place the *.TIFF and *.VTK files in the datasets folder.
 
 ```console
-foo@bar:~$ gcc -g -Wall -Wextra -pedantic-errors -L/usr/lib src/log.c src/main.c -ltiff -o build/tiff2vtk
+foo@bar:~$ make
 foo@bar:~$ ./build/tiff2vtk datasets/Knochenprobe2stream.tiff datasets/Knochenprobe2stream.vtk 1
 ```
 
