@@ -5,6 +5,7 @@ tiff2vtk
 *.tiff
 .vscode
 .vscode/
+*.py
 
 # exclude everything
 build/*
