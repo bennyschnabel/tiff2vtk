@@ -6,6 +6,7 @@ tiff2vtk
 .vscode
 .vscode/
 *.py
+!main.py
 
 # exclude everything
 build/*
